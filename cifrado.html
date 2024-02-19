@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrador y Descifrador</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cifrador</h5>
+                        <div class="form-group">
+                            <label for="textoCifrar">Texto:</label>
+                            <input type="text" id="textoCifrar" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="desplazamientoCifrar">Desplazamiento (max 107):</label>
+                            <input type="number" id="desplazamientoCifrar" class="form-control" max="107">
+                        </div>
+                        <button onclick="cifrar()" class="btn btn-primary">Cifrar</button>
+                        <div id="resultadoCifrado" class="mt-3"></div>
+                        <div id="mensajeErrorCifrado" class="text-danger mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Descifrador</h5>
+                        <div class="form-group">
+                            <label for="textoDescifrar">Texto Cifrado:</label>
+                            <input type="text" id="textoDescifrar" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="desplazamientoDescifrar">Desplazamiento (max 107):</label>
+                            <input type="number" id="desplazamientoDescifrar" class="form-control" max="107">
+                        </div>
+                        <button onclick="descifrar()" class="btn btn-primary">Descifrar</button>
+                        <div id="resultadoDescifrado" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function cifrar() {
+            const desplazamiento = parseInt(document.getElementById('desplazamientoCifrar').value);
+            if (desplazamiento > 107) {
+                document.getElementById('mensajeErrorCifrado').textContent = "El desplazamiento no puede ser mayor a 107.";
+            } else {
+                document.getElementById('mensajeErrorCifrado').textContent = "";
+                const texto = document.getElementById('textoCifrar').value;
+                const mensajeCifrado = cifrarMensaje(texto, desplazamiento, asciiPrintable);
+                document.getElementById('resultadoCifrado').innerHTML = mensajeCifrado;
+            }
+        }
+
+        function descifrar() {
+            const textoCifrado = document.getElementById('textoDescifrar').value;
+            const desplazamiento = parseInt(document.getElementById('desplazamientoDescifrar').value);
+            const mensajeDescifrado = descifrarMensaje(textoCifrado, desplazamiento, asciiPrintable);
+            document.getElementById('resultadoDescifrado').innerHTML = mensajeDescifrado;
+        }
+
+        function cifrarMensaje(mensaje, desplazamiento, asciiPrintable) {
+            let mensajeCifrado = '';
+            for (let i = 0; i < mensaje.length; i++) {
+                const letra = mensaje[i];
+                if (asciiPrintable.includes(letra)) {
+                    const indice = (asciiPrintable.indexOf(letra) + desplazamiento) % asciiPrintable.length;
+                    mensajeCifrado += asciiPrintable[indice];
+                } else {
+                    mensajeCifrado += letra;
+                }
+            }
+            return mensajeCifrado;
+        }
+
+        function descifrarMensaje(mensajeCifrado, desplazamiento, asciiPrintable) {
+            let mensajeDescifrado = '';
+            for (let i = 0; i < mensajeCifrado.length; i++) {
+                const letra = mensajeCifrado[i];
+                if (asciiPrintable.includes(letra)) {
+                    let indice = (asciiPrintable.indexOf(letra) - desplazamiento) % asciiPrintable.length;
+                    if (indice < 0) {
+                        indice += asciiPrintable.length;
+                    }
+                    mensajeDescifrado += asciiPrintable[indice];
+                } else {
+                    mensajeDescifrado += letra;
+                }
+            }
+            return mensajeDescifrado;
+        }
+
+        // Creamos un vector con los caracteres imprimibles de ASCII (códigos del 32 al 126)
+        const asciiPrintable = [];
+        for (let i = 32; i <= 126; i++) {
+            asciiPrintable.push(String.fromCharCode(i));
+        }
+
+        // Caracteres adicionales que queremos añadir al vector
+        const additionalChars = ["é", "É", "á", "í", "ó", "ú", "ñ", "Ñ", "¿", "Á", "Í", "Ó", "Ú"];
+
+        // Extendemos el vector original con los caracteres adicionales
+        asciiPrintable.push(...additionalChars);
+    </script>
+</body>
+</html>
