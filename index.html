@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cifrador y Descifrador</title>
-    <!-- Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -48,12 +48,12 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        // #1
         function cifrar() {
             const desplazamiento = parseInt(document.getElementById('desplazamientoCifrar').value);
             if (desplazamiento > 107) {
@@ -65,7 +65,7 @@
                 document.getElementById('resultadoCifrado').innerHTML = mensajeCifrado;
             }
         }
-
+        // #2
         function descifrar() {
             const textoCifrado = document.getElementById('textoDescifrar').value;
             const desplazamiento = parseInt(document.getElementById('desplazamientoDescifrar').value);
@@ -73,6 +73,7 @@
             document.getElementById('resultadoDescifrado').innerHTML = mensajeDescifrado;
         }
 
+        // #3
         function cifrarMensaje(mensaje, desplazamiento, asciiPrintable) {
             let mensajeCifrado = '';
             for (let i = 0; i < mensaje.length; i++) {
@@ -87,6 +88,7 @@
             return mensajeCifrado;
         }
 
+        // #4
         function descifrarMensaje(mensajeCifrado, desplazamiento, asciiPrintable) {
             let mensajeDescifrado = '';
             for (let i = 0; i < mensajeCifrado.length; i++) {
@@ -104,17 +106,23 @@
             return mensajeDescifrado;
         }
 
-        // Creamos un vector con los caracteres imprimibles de ASCII (códigos del 32 al 126)
+        const abc = "!#$%&()*+,-./:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["+String.fromCharCode(92)+"]^_abcdefghijklmnopqrstuvwxyz{|}éÉáíóúñÑ¿ÁÍÓÚ0123456789"
+        const abc1 = abc.split('')
+        
+
+        // #5
         const asciiPrintable = [];
+        /*
         for (let i = 32; i <= 126; i++) {
             asciiPrintable.push(String.fromCharCode(i));
         }
 
-        // Caracteres adicionales que queremos añadir al vector
         const additionalChars = ["é", "É", "á", "í", "ó", "ú", "ñ", "Ñ", "¿", "Á", "Í", "Ó", "Ú"];
 
-        // Extendemos el vector original con los caracteres adicionales
-        asciiPrintable.push(...additionalChars);
+        asciiPrintable.push(...additionalChars);*/
+
+        asciiPrintable.push(...abc1)
+    
     </script>
 </body>
 </html>
